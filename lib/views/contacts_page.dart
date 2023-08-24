@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_assessment/view_model/contacts.dart';
 
+import '../models/contact.dart';
 import '../widgets/contact_tile.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/filter_button.dart';
@@ -15,6 +18,17 @@ class _ContactsPageState extends State<ContactsPage> {
   bool _isFav = false;
 
   void _toggleFav() => setState(() => _isFav = !_isFav);
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      final result = await Contacts().fetchUsers();
+      for (var e in result) {
+        print('--->${e.firstName}');
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +70,25 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
           // EmptyWidget(),
-          const ContactTile(
-            name: 'Darlene Steward',
-            email: 'darlene.steward7@gmail.com',
-            decription: 'Fullstack Developer',
-          )
+          Consumer(
+            builder: (_, ref, __) {
+              return FutureBuilder<List<Contact>>(
+                future: ref.watch(fetchUsersProvider.future),
+                builder: (_, snapshot) => snapshot.hasData
+                    ? Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (_, i) => ContactTile(
+                            name: snapshot.data![i].firstName,
+                            email: snapshot.data![i].email,
+                            decription: 'Fullstack Developer',
+                          ),
+                          itemCount: snapshot.data?.length,
+                        ),
+                      )
+                    : const LoadingWidget(),
+              );
+            },
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -68,6 +96,21 @@ class _ContactsPageState extends State<ContactsPage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(
+            top: MediaQuery.sizeOf(context).height * .3),
+        child: const CircularProgressIndicator(),
+      );
   }
 }
 

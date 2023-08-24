@@ -34,6 +34,9 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.white),
         ),
+
+        // collapsedBackgroundColor: kPrimaryColor.withOpacity(.1),
+        // collapsedBackgroundColor: Colors.white,
         collapsedShape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.white),
         ),
