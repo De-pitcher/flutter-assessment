@@ -8,6 +8,8 @@ import '../widgets/custom_textfield.dart';
 import '../widgets/filter_button.dart';
 
 class ContactsPage extends StatefulWidget {
+  static const id = '/';
+
   const ContactsPage({super.key});
 
   @override
@@ -78,9 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     ? Expanded(
                         child: ListView.builder(
                           itemBuilder: (_, i) => ContactTile(
-                            name: snapshot.data![i].firstName,
-                            email: snapshot.data![i].email,
-                            decription: 'Fullstack Developer',
+                            contact: snapshot.data![i],
                           ),
                           itemCount: snapshot.data?.length,
                         ),
@@ -107,10 +107,9 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(
-            top: MediaQuery.sizeOf(context).height * .3),
-        child: const CircularProgressIndicator(),
-      );
+      padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height * .3),
+      child: const CircularProgressIndicator(),
+    );
   }
 }
 
