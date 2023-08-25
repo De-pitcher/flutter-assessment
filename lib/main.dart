@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/utils/app_theme.dart';
 import 'package:flutter_assessment/views/contacts_page.dart';
+import 'package:flutter_assessment/views/profile_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'views/profile_page.dart';
