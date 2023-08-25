@@ -45,7 +45,7 @@ class Contacts implements ContactRepository {
         lastName: response['firstname'],
         email: 'email',
         avatar: 'avatar',
-        id: response['id'],
+        id: int.parse((response['id']).toString()),
       );
     } on DioException catch (e) {
       var error = DioClientException.fromDioError(e);
