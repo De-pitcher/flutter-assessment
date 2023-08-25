@@ -24,10 +24,18 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      final result = await Contacts().fetchUsers();
-      for (var e in result) {
-        print('--->${e.firstName}');
-      }
+      await Contacts().fetchUsers().then((value) {
+        for (var e in value) {
+          print('--->${e.firstName}');
+        }
+      });
+      await Contacts()
+          .createUser('firstName', 'lastName')
+          .then((value) => print(value.firstName));
+      await Contacts()
+          .updateUser('firstName', 'job')
+          .then((value) => print(value.firstName));
+      await Contacts().deleteUser().then((value) => print('Success'));
     });
     super.initState();
   }
@@ -75,6 +83,11 @@ class _ContactsPageState extends State<ContactsPage> {
           Consumer(
             builder: (_, ref, __) {
               return FutureBuilder<List<Contact>>(
+                //TODO: Use the format in FutureBuilder to implement the 
+                //endpoints in your codes
+                // ref.watch(createUserProvider(param1, param2))
+                // ref.watch(updateUserProvider(param1, param2))
+                // ref.watch(deleteUserProvider())
                 future: ref.watch(fetchUsersProvider.future),
                 builder: (_, snapshot) => snapshot.hasData
                     ? Expanded(

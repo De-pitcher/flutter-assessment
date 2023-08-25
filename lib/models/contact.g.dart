@@ -11,6 +11,7 @@ _$_Contact _$$_ContactFromJson(Map<String, dynamic> json) => _$_Contact(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       email: json['email'] as String,
+      job: json['job'] as String?,
       avatar: json['avatar'] as String,
     );
 
@@ -20,5 +21,6 @@ Map<String, dynamic> _$$_ContactToJson(_$_Contact instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'email': instance.email,
+      'job': instance.job,
       'avatar': instance.avatar,
     };

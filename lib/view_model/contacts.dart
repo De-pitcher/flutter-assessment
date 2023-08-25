@@ -31,6 +31,58 @@ class Contacts implements ContactRepository {
       throw error.errorMessage;
     }
   }
+
+  @override
+  Future<Contact> createUser(String firstName, String lastName) async {
+    try {
+      final Map<String, String> data = {
+        "name": firstName,
+        "firstname": lastName,
+      };
+      final response = await DioClient.instance.post(baseUrl, data: data);
+      return Contact(
+        firstName: response['name'],
+        lastName: response['firstname'],
+        email: 'email',
+        avatar: 'avatar',
+        id: response['id'],
+      );
+    } on DioException catch (e) {
+      var error = DioClientException.fromDioError(e);
+      throw error.errorMessage;
+    }
+  }
+
+  @override
+  Future deleteUser() async {
+    try {
+      return await DioClient.instance.delete('$baseUrl/2');
+    } on DioException catch (e) {
+      var error = DioClientException.fromDioError(e);
+      throw error.errorMessage;
+    }
+  }
+
+  @override
+  Future<Contact> updateUser(String firstName, String job) async {
+    try {
+      final Map<String, String> data = {
+        "name": firstName,
+        "job": job,
+      };
+      final response = await DioClient.instance.put('$baseUrl/4', data: data);
+      return Contact(
+        firstName: response['name'],
+        job: response['job'],
+        lastName: 'lastName',
+        email: 'email',
+        avatar: 'avatar',
+      );
+    } on DioException catch (e) {
+      var error = DioClientException.fromDioError(e);
+      throw error.errorMessage;
+    }
+  }
 }
 
 @riverpod
@@ -39,3 +91,22 @@ Contacts contact(ContactRef ref) => Contacts();
 @riverpod
 Future<List<Contact>> fetchUsers(FetchUsersRef ref) =>
     ref.watch(contactProvider).fetchUsers();
+
+@riverpod
+Future<Contact> createUser(
+  CreateUserRef ref,
+  String firstName,
+  String lastName,
+) =>
+    ref.watch(contactProvider).createUser(firstName, lastName);
+
+@riverpod
+Future<Contact> updateUser(
+  UpdateUserRef ref,
+  String firstName,
+  String job,
+) =>
+    ref.watch(contactProvider).updateUser(firstName, job);
+
+@riverpod
+Future deleteUser(DeleteUserRef ref) => ref.watch(contactProvider).deleteUser();

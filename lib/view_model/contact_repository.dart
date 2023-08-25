@@ -3,11 +3,11 @@ import 'package:flutter_assessment/models/contact.dart';
 abstract class ContactRepository {
   Future<List<Contact>> fetchUsers();
 
-  // Future createUser();
+  Future<Contact> createUser(String firstName, String lastName);
 
-  // Future deleteUser();
+  Future deleteUser();
 
-  // Future updateUser();
+  Future<Contact> updateUser(String firstName, String job);
 
   // Future getUser();
 }

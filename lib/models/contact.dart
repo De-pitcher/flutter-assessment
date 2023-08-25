@@ -10,6 +10,7 @@ class Contact with _$Contact {
     required String firstName,
     required String lastName,
     required String email,
+    String? job, 
     required String avatar,
   }) = _Contact;
 
